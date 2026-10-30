@@ -4,7 +4,7 @@
 <img src="https://img.shields.io/badge/Made%20for-Pakistan-009900?style=for-the-badge" />
 <img src="https://img.shields.io/github/license/its-abuzar/CV-analyser?style=for-the-badge" />
 
-# SkillBridge Pakistan
+# SkillBridge
 ### *Your intelligent career co-pilot*
 
 **Discover jobs. Tailor your CV. Ace the interview. Track every application.**  
