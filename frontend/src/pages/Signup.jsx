@@ -1,7 +1,7 @@
 
 import { useState } from 'react'
 
-function Signup() {
+function Signup({ onLoginClick })  {
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -108,6 +108,18 @@ function Signup() {
                     </button>
 
                 </form>
+                <p>
+    Already have an account?
+    <a
+        href="/login"
+        onClick={(e) => {
+            e.preventDefault()
+            onLoginClick()
+        }}
+    >
+        Login
+    </a>
+</p>
             </div>
 
         </div>
