@@ -1,129 +1,47 @@
-
 import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import AuthLayout, { Field } from './AuthLayout'
 
-function Signup({ onLoginClick })  {
-    const [name, setName] = useState("")
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [confirmpassword, setConfirmPassword] = useState("")
+function Signup() {
+  const [role, setRole] = useState('candidate')
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirm, setConfirm] = useState('')
+  const [error, setError] = useState('')
+  const navigate = useNavigate()
 
-    function handleSubmit(e) {
-        e.preventDefault()
+  function handleSubmit(e) {
+    e.preventDefault()
+    if (password.length < 8) return setError('Password must be at least 8 characters.')
+    if (password !== confirm) return setError('The two passwords do not match.')
+    // TODO: send { name, email, password, role } to the backend to save the new user
+    navigate('/login')
+  }
 
-        if (password.length < 8) {
-            alert("Password must be at least 8 characters long")
-            return
-        }
-
-        if (password !== confirmpassword) {
-            alert("Passwords do not match")
-            return
-        }
-
-        alert("Signup form submitted successfully!")
-
-        console.log("Full Name:", name)
-        console.log("Email:", email)
-    }
-
-    return (
-        <div className="signup-page">
-
-            {/* Left branding section */}
-            <div className="branding-panel">
-                <h1>SkillBridge</h1>
-
-                <h2>
-                    Bridge your skills.
-                    <br />
-                    Build your future.
-                </h2>
-
-                <p>
-                    Connect your learning journey with opportunities,
-                    skills and growth.
-                </p>
-
-                <div className="features">
-                    <span>Learn</span>
-                    <span>Grow</span>
-                    <span>Achieve</span>
-                </div>
-            </div>
-
-            {/* Right signup card */}
-            <div className="signup-container">
-
-                <h1>Create Account</h1>
-                <p>Start your journey with SkillBridge</p>
-
-                <form onSubmit={handleSubmit}>
-
-                    <div>
-                        <label>Full Name</label>
-                        <input
-                            type="text"
-                            placeholder="Enter Your Full Name"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                        />
-                    </div>
-
-                    <div>
-                        <label>Email Address</label>
-                        <input
-                            type="email"
-                            placeholder="Enter your Email Address"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                    </div>
-
-                    <div>
-                        <label>Password</label>
-                        <input
-                            type="password"
-                            placeholder="Enter your Password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                    </div>
-
-                    <div>
-                        <label>Confirm Password</label>
-                        <input
-                            type="password"
-                            placeholder="Confirm your Password"
-                            value={confirmpassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            required
-                        />
-                    </div>
-
-                    <button type="submit">
-                        Create Account
-                    </button>
-
-                </form>
-                <p>
-    Already have an account?
-    <a
-        href="/login"
-        onClick={(e) => {
-            e.preventDefault()
-            onLoginClick()
-        }}
-    >
-        Login
-    </a>
-</p>
-            </div>
-
+  return (
+    <AuthLayout>
+      <h1>Create your account</h1>
+      <p className="sub">It takes about a minute.</p>
+      <form onSubmit={handleSubmit}>
+        <div className="role" role="group" aria-label="I am a">
+          <button type="button" aria-pressed={role === 'candidate'} onClick={() => setRole('candidate')}>
+            Job seeker
+          </button>
+          <button type="button" aria-pressed={role === 'recruiter'} onClick={() => setRole('recruiter')}>
+            Recruiter
+          </button>
         </div>
-    )
+        <Field label="Full name" value={name} onChange={setName} placeholder="Ayesha Khan" />
+        <Field label="Email" type="email" value={email} onChange={setEmail} placeholder="you@example.com" />
+        <Field label="Password" type="password" value={password} onChange={setPassword} placeholder="At least 8 characters" />
+        <Field label="Confirm password" type="password" value={confirm} onChange={setConfirm} placeholder="Type it again" />
+        {error && <p className="error" role="alert">{error}</p>}
+        <button type="submit" className="btn">Create account</button>
+      </form>
+      <p className="switch">Already registered? <Link to="/login">Log in</Link></p>
+    </AuthLayout>
+  )
 }
 
 export default Signup
