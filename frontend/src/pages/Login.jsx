@@ -1,105 +1,37 @@
-
 import { useState } from 'react'
-import './Login.css'
+import { Link, useNavigate } from 'react-router-dom'
+import AuthLayout, { Field } from './AuthLayout'
 
-function Login({ onSignupClick })  {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+function Login() {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const navigate = useNavigate()
 
-    function handleSubmit(e) {
-        e.preventDefault()
-
-        alert('Login form submitted successfully!')
-
-        console.log('Email:', email)
+  function handleSubmit(e) {
+    e.preventDefault()
+    if (password.length < 8) {
+      setError('Password must be at least 8 characters.')
+      return
     }
+    // TODO: replace with a real request to the backend (check email + password in the database)
+    navigate('/dashboard')
+  }
 
-    return (
-        <div className="login-page">
-
-            <div className="login-branding-panel">
-
-                <h1>SkillBridge</h1>
-
-                <h2>
-                    Welcome Back.
-                    <br />
-                    Continue Your Journey.
-                </h2>
-
-                <p>
-                    Your learning journey doesn't stop here.
-                    Log in to continue building your skills
-                    and achieving your goals.
-                </p>
-
-                <div className="login-features">
-                    <span>Learn</span>
-                    <span>Grow</span>
-                    <span>Achieve</span>
-                </div>
-
-            </div>
-
-            {/* Right login card */}
-            <div className="login-container">
-
-                <h1>Welcome Back!</h1>
-
-                <p>Log in to your SkillBridge account</p>
-
-                <form onSubmit={handleSubmit}>
-
-                    <div>
-                        <label>Email Address</label>
-
-                        <input
-                            type="email"
-                            placeholder="Enter your Email Address"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                    </div>
-
-                    <div>
-                        <label>Password</label>
-
-                        <input
-                            type="password"
-                            placeholder="Enter your Password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                    </div>
-
-                    <div className="forgot-password">
-                        <a href="/forgot-password">
-                            Forgot Password?
-                        </a>
-                    </div>
-
-                    <button type="submit">
-                        Login
-                    </button>
-
-                </form>
-
-                <div className="login-signup-link">
-                    Don't have an account?
-                   <a href="/signup" onClick={(e) => {
-                      e.preventDefault()
-                      onSignupClick()
-                      }}>
-                       Sign Up
-                      </a>
-                </div>
-
-            </div>
-
-        </div>
-    )
+  return (
+    <AuthLayout>
+      <h1>Log in</h1>
+      <p className="sub">Pick up where you left off.</p>
+      <form onSubmit={handleSubmit}>
+        <Field label="Email" type="email" value={email} onChange={setEmail} placeholder="you@example.com" />
+        <Field label="Password" type="password" value={password} onChange={setPassword} placeholder="Your password" />
+        {error && <p className="error" role="alert">{error}</p>}
+        <Link to="/forgot-password" className="forgot">Forgot your password?</Link>
+        <button type="submit" className="btn">Log in</button>
+      </form>
+      <p className="switch">New to SkillBridge? <Link to="/signup">Create an account</Link></p>
+    </AuthLayout>
+  )
 }
 
 export default Login
